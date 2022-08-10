@@ -7,7 +7,7 @@
     <version>1.0.0</version>
 
     <name>Commands API</name>
-    <description>Java library that offers better commands API for Bukkit plugins</description>
+    <description>Java library that provides better commands API for Bukkit plugins</description>
     <url>https://github.com/Maksim2498/mc-commands</url>
 
     <properties>
