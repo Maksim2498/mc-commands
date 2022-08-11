@@ -1,6 +1,7 @@
 package space.moontalk.mc.commands;
 
 import org.bukkit.command.CommandSender;
+
 import org.jetbrains.annotations.NotNull;
 
 import lombok.val;
