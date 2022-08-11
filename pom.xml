@@ -48,11 +48,6 @@
             <artifactId>ranges</artifactId>
             <version>1.0.1</version>
         </dependency>
-        <dependency>
-            <groupId>space.moontalk</groupId>
-            <artifactId>placeholders</artifactId>
-            <version>1.0.2</version>
-        </dependency>
     </dependencies>
 
     <build>
