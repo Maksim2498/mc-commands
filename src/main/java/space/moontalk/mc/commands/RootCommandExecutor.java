@@ -22,7 +22,7 @@ public class RootCommandExecutor implements CommandExecutor, SubcommandExecutors
 
     }
 
-    public RootCommandExecutor(ErrorMessageProvider errorMessageProvider) {
+    public RootCommandExecutor(@Nullable ErrorMessageProvider errorMessageProvider) {
         this.errorMessageProvider = errorMessageProvider;
     }
 
