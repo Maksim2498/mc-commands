@@ -71,11 +71,11 @@ public class RootCommandExecutor implements CommandExecutor, SubcommandExecutors
                 sender.sendMessage(message);
             } else if (commonException instanceof MissingPermissionException exception) {
                 val permission = exception.getRequiredPermission();
-                val message    = errorMessageProvider.makeMissingPermissionException(permission);
+                val message    = errorMessageProvider.makeMissingPermissionMessage(permission);
 
                 sender.sendMessage(message);
             } else if (commonException instanceof MissingSubcommandException exception) {
-                val message = errorMessageProvider.makeMissingSubcommandException();
+                val message = errorMessageProvider.makeMissingSubcommandMessage();
 
                 sender.sendMessage(message);
             } else {
