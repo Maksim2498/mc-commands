@@ -78,6 +78,11 @@ public class RootCommandExecutor implements CommandExecutor, SubcommandExecutors
                 val message = errorMessageProvider.makeMissingSubcommandException();
 
                 sender.sendMessage(message);
+            } else {
+                val message = commonException.getMessage();
+
+                if (message != null)
+                    sender.sendMessage(message);
             }
 
         if (commonException instanceof CommandException commandException)
