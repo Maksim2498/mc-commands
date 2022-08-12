@@ -3,7 +3,7 @@ package space.moontalk.mc.commands;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class CommandException extends Exception {
-    private boolean returnValue;
+    private boolean returnValue = true;
 
     public CommandException() {
 
