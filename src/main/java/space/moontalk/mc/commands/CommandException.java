@@ -1,6 +1,6 @@
 package space.moontalk.mc.commands;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class CommandException extends Exception {
     private boolean returnValue = true;
