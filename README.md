@@ -10,7 +10,7 @@
 
 ## About
 
-This is a small java library which provides a better commands API for Bukkit plugins.
+This is a java library which provides a better commands API for Bukkit plugins.
 
 ## Installation
 
