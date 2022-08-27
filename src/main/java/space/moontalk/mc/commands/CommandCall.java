@@ -5,15 +5,14 @@ import org.bukkit.command.CommandSender;
 
 import org.jetbrains.annotations.NotNull;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@Builder
-public class SubcommandCall {
+@AllArgsConstructor
+public class CommandCall {
+    private final @NotNull CommandSender commandSender;
     private final @NotNull Command       command;
-    private final @NotNull CommandSender sender;
     private final @NotNull String        label;
-    private final @NotNull String[]      subargs;
-    private final @NotNull String        subcommand;
+    private final @NotNull String[]      args;
 }

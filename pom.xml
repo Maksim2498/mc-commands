@@ -4,7 +4,7 @@
 
     <groupId>space.moontalk.mc</groupId>
     <artifactId>commands</artifactId>
-    <version>1.0.2</version>
+    <version>2.0.0</version>
 
     <name>Commands API</name>
     <description>Java library that provides better commands API for Bukkit plugins</description>
@@ -43,11 +43,6 @@
             <version>1.18.24</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>space.moontalk</groupId>
-            <artifactId>ranges</artifactId>
-            <version>1.0.1</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -72,7 +67,6 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
             </plugin>
             <plugin>
