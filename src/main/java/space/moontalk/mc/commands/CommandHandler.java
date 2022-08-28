@@ -53,6 +53,8 @@ public class CommandHandler implements TabCompleter,
         } catch (CommandException exception) {
             sender.sendMessage(exception.getMessage());
             return exception.getReturnCode();
+        } catch (Exception exception) {
+            sender.sendMessage(exception.getMessage());
         }
 
         return true;

@@ -29,7 +29,7 @@ public class ComputingRouter extends AbstractParsingRouter {
     }
 
     @Override
-    public void route(@NotNull CommandCall commandCall) throws RouteException {
+    public void route(@NotNull CommandCall commandCall) throws Exception {
         val possiblePaths = evalPossibleNodePaths(); 
 
         filterPossiblePaths(possiblePaths, commandCall);
@@ -167,7 +167,7 @@ public class ComputingRouter extends AbstractParsingRouter {
         });
     }
 
-    private void routeCall(@NotNull PathAndHandler pah, @NotNull CommandCall commandCall) throws RouteException {
+    private void routeCall(@NotNull PathAndHandler pah, @NotNull CommandCall commandCall) throws Exception {
         val path            = pah.getPath();
         val placeholdedList = new LinkedList<Object>();
         val args            = commandCall.getArgs();

@@ -1,6 +1,6 @@
 package space.moontalk.mc.commands.placeholder;
 
-import org.bukkit.command.CommandException;
+import space.moontalk.mc.commands.CommandException;
 
 import org.jetbrains.annotations.Nullable;
 

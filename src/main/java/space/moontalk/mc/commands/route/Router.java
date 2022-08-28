@@ -13,7 +13,7 @@ public interface Router {
 
     void addRoute(@NotNull Route route);
 
-    void route(@NotNull CommandCall call) throws RouteException;
+    void route(@NotNull CommandCall call) throws Exception;
 
     @NotNull List<String> evalCompletions(@NotNull CommandCall call);
 }
