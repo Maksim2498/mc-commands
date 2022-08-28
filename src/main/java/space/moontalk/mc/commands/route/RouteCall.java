@@ -38,4 +38,8 @@ public class RouteCall extends CommandCall {
     public <T> @NotNull T getPlaceholded(int index) {
         return (T) placeholded[index];
     }
+
+    public int getPlaceholdedCount() {
+        return placeholded.length;
+    }
 }
