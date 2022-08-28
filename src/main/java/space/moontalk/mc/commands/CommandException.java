@@ -3,7 +3,7 @@ package space.moontalk.mc.commands;
 import org.jetbrains.annotations.Nullable;
 
 public class CommandException extends Exception {
-    private boolean returnCode = true;
+    private boolean returnCode = false;
 
     public CommandException() {
 
@@ -15,10 +15,6 @@ public class CommandException extends Exception {
 
     public CommandException(@Nullable String message, @Nullable Throwable cause) {
         super(message, cause);
-    }
-
-    public CommandException(boolean returnCode) {
-        this.returnCode = returnCode;
     }
 
     public boolean getReturnCode() {

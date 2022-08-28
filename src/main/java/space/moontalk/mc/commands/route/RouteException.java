@@ -16,8 +16,4 @@ public class RouteException extends CommandException {
     public RouteException(@Nullable String message, @Nullable Throwable cause) {
         super(message, cause);
     }
-
-    public RouteException(boolean returnCode) {
-        super(returnCode);
-    }
 }
