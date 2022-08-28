@@ -51,13 +51,20 @@ public class CommandHandler implements TabCompleter,
         try {
             router.route(commandCall);
         } catch (CommandException exception) {
-            sender.sendMessage(exception.getMessage());
+            sendMessageIfHas(sender, exception);
             return exception.getReturnCode();
         } catch (Exception exception) {
-            sender.sendMessage(exception.getMessage());
+            sendMessageIfHas(sender, exception);
         }
 
         return true;
+    }
+
+    private void sendMessageIfHas(@NotNull CommandSender sender, @NotNull Exception exception) {
+        val message = exception.getMessage();
+
+        if (message != null)
+            sender.sendMessage(message);
     }
 
     public void attach(@NotNull PluginCommand command) {
