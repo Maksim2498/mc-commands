@@ -17,6 +17,10 @@ public class CommandException extends Exception {
         super(message, cause);
     }
 
+    public CommandException(boolean returnCode) {
+        this.returnCode = returnCode;
+    }
+
     public boolean getReturnCode() {
         return returnCode;
     }
