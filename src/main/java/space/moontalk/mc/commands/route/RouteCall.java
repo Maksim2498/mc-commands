@@ -34,6 +34,10 @@ public class RouteCall extends CommandCall {
         this.placeholded = placeholded;
     }
 
+    public <T> @NotNull T getPlaceholdedOrNull(int index) {
+        return 0 <= index && index < placeholded.length ? getPlaceholded(index) : null;
+    }
+
     @SuppressWarnings("unchecked")
     public <T> @NotNull T getPlaceholded(int index) {
         return (T) placeholded[index];
