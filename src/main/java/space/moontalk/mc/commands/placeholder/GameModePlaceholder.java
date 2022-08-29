@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import lombok.Getter;
 
+import space.moontalk.mc.commands.CommandCall;
 import space.moontalk.mc.commands.message.GameModeNotFoundMessageProvider;
 
 @Getter
@@ -22,14 +23,17 @@ public class GameModePlaceholder extends AbstractPlaceholder<GameMode> {
     }
 
     @Override
-    public @NotNull List<@NotNull String> evalVariants() {
+    public @NotNull List<@NotNull String> evalVariants(@NotNull CommandCall call) {
         return Arrays.stream(GameMode.values())
                      .map(gm -> gm.name().toLowerCase())
                      .collect(Collectors.toList());
     }
 
     @Override
-    public @NotNull GameMode variantToObject(@NotNull String variant) throws GameModeNotFoundException {
+    public @NotNull GameMode variantToObject(
+        @NotNull CommandCall call,
+        @NotNull String      variant
+    ) throws GameModeNotFoundException {
         try {
             return GameMode.valueOf(variant.toUpperCase());
         } catch (IllegalArgumentException exception) {

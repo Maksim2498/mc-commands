@@ -29,17 +29,17 @@ public class ComputingRouter extends AbstractParsingRouter {
     }
 
     @Override
-    public void route(@NotNull CommandCall commandCall) throws Exception {
+    public void route(@NotNull CommandCall call) throws Exception {
         val possiblePaths = evalPossibleNodePaths(); 
 
-        filterPossiblePaths(possiblePaths, commandCall);
+        filterPossiblePaths(possiblePaths, call);
 
         if (possiblePaths.size() != 1)
             throw new MissingRouteException();
 
         val path = possiblePaths.stream().findFirst().get();
 
-        routeCall(path, commandCall);
+        routeCall(path, call);
     }
 
     private @NotNull List<PathAndHandler> evalPossibleNodePaths() {
@@ -151,7 +151,7 @@ public class ComputingRouter extends AbstractParsingRouter {
                     case PLACEHOLDER: {
                         val placeholderNode = (RouteNode.Placeholder) node;
                         val placeholder     = placeholderNode.getPlaceholder();
-                        val variants        = placeholder.evalVariants();
+                        val variants        = placeholder.evalVariants(call);
 
                         if (!variants.contains(arg))
                             return true;
@@ -168,10 +168,10 @@ public class ComputingRouter extends AbstractParsingRouter {
         });
     }
 
-    private void routeCall(@NotNull PathAndHandler pah, @NotNull CommandCall commandCall) throws Exception {
+    private void routeCall(@NotNull PathAndHandler pah, @NotNull CommandCall call) throws Exception {
         val path            = pah.getPath();
         val placeholdedList = new LinkedList<Object>();
-        val args            = commandCall.getArgs();
+        val args            = call.getArgs();
         int i               = 0;
 
         for (val node : path) {
@@ -180,7 +180,7 @@ public class ComputingRouter extends AbstractParsingRouter {
                 val arg         = args[i];
 
                 try {
-                    val placeholded = placeholder.variantToObject(arg);
+                    val placeholded = placeholder.variantToObject(call, arg);
 
                     placeholdedList.add(placeholded);
                 } catch (Exception exception) {}
@@ -190,10 +190,10 @@ public class ComputingRouter extends AbstractParsingRouter {
         }
 
         val placeholdedArray = placeholdedList.toArray();
-        val routeCall        = new RouteCall(commandCall, placeholdedArray);
+        val routeCall        = new RouteCall(call, placeholdedArray);
         val handler          = pah.getHandler();
 
-        handler.onCall(routeCall);
+        handler.onRoute(routeCall);
     }
 
     @Override
@@ -203,8 +203,8 @@ public class ComputingRouter extends AbstractParsingRouter {
         if (args.length == 0)
             return Collections.emptyList();
 
-        val completionNodes = evalCompletionNodes(call.getCommandSender(), args);
-        val completions     = completionNodesToCompletions(completionNodes);
+        val completionNodes = evalCompletionNodes(call);
+        val completions     = completionNodesToCompletions(completionNodes, call);
         val lastArg         = args[args.length - 1];
 
         removeNotStartingWith(completions, lastArg);
@@ -212,8 +212,9 @@ public class ComputingRouter extends AbstractParsingRouter {
         return completions;
     }
 
-    private @NotNull List<RouteNode> evalCompletionNodes(@NotNull CommandSender sender, @NotNull String[] args) {
+    private @NotNull List<RouteNode> evalCompletionNodes(@NotNull CommandCall call) {
         val completionNodes = new LinkedList<RouteNode>();
+        val sender          = call.getCommandSender();
 
         for (val route : routes) {
             val handler = route.getHandler();
@@ -223,7 +224,7 @@ public class ComputingRouter extends AbstractParsingRouter {
 
             val tree = route.getTree();
 
-            addCompletionNodes(completionNodes, tree, args, 0);
+            addCompletionNodes(completionNodes, tree, call, 0);
         }
 
         return completionNodes;
@@ -232,9 +233,11 @@ public class ComputingRouter extends AbstractParsingRouter {
     private int addCompletionNodes(
         @NotNull List<RouteNode> completionNodes,
         @NotNull RouteNode       node,
-        @NotNull String[]        args,
+        @NotNull CommandCall     call,
         int                      argIndex
     ) {
+        val args = call.getArgs();
+
         if (argIndex >= args.length)
             return argIndex;
 
@@ -263,7 +266,7 @@ public class ComputingRouter extends AbstractParsingRouter {
 
                 val placeholderNode = (RouteNode.Placeholder) node;
                 val placeholder     = placeholderNode.getPlaceholder();
-                val variants        = placeholder.evalVariants();
+                val variants        = placeholder.evalVariants(call);
                 val arg             = args[argIndex];
 
                 yield variants.contains(arg) ? 1 : -1;
@@ -272,8 +275,8 @@ public class ComputingRouter extends AbstractParsingRouter {
             case OR -> {
                 val orNode = (RouteNode.Or) node;
 
-                val left  = addCompletionNodes(completionNodes, orNode.getLeftChild(),  args, argIndex);
-                val right = addCompletionNodes(completionNodes, orNode.getRightChild(), args, argIndex);
+                val left  = addCompletionNodes(completionNodes, orNode.getLeftChild(),  call, argIndex);
+                val right = addCompletionNodes(completionNodes, orNode.getRightChild(), call, argIndex);
 
                 yield Math.max(left, right);
             }
@@ -281,12 +284,12 @@ public class ComputingRouter extends AbstractParsingRouter {
             case CONCAT -> {
                 val concatNode = (RouteNode.Concat) node;
 
-                val left = addCompletionNodes(completionNodes, concatNode.getLeftChild(),  args, argIndex);
+                val left = addCompletionNodes(completionNodes, concatNode.getLeftChild(), call, argIndex);
 
                 if (left == -1)
                     yield -1;
 
-                val right = addCompletionNodes(completionNodes, concatNode.getRightChild(), args, argIndex + left);
+                val right = addCompletionNodes(completionNodes, concatNode.getRightChild(), call, argIndex + left);
 
                 yield right;
             }
@@ -295,7 +298,10 @@ public class ComputingRouter extends AbstractParsingRouter {
         };
     } 
 
-    private @NotNull List<String> completionNodesToCompletions(@NotNull List<RouteNode> nodes) {
+    private @NotNull List<String> completionNodesToCompletions(
+        @NotNull List<RouteNode> nodes,
+        @NotNull CommandCall     call
+    ) {
         val completions = new LinkedList<String>();
 
         for (val node : nodes)
@@ -310,7 +316,7 @@ public class ComputingRouter extends AbstractParsingRouter {
                 case PLACEHOLDER -> {
                     val placeholderNode = (RouteNode.Placeholder) node;
                     val placeholder     = placeholderNode.getPlaceholder();
-                    val variants        = placeholder.evalVariants();
+                    val variants        = placeholder.evalVariants(call);
 
                     completions.addAll(variants);
                 }

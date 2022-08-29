@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
-public interface Placeholder<T> {
-    @NotNull List<@NotNull String> evalVariants();
+import space.moontalk.mc.commands.CommandCall;
 
-    @NotNull T variantToObject(@NotNull String variant) throws Exception; 
+public interface Placeholder<T> {
+    @NotNull List<@NotNull String> evalVariants(@NotNull CommandCall call);
+
+    @NotNull T variantToObject(@NotNull CommandCall call, @NotNull String variant) throws Exception; 
 
     char getShortName();
 }

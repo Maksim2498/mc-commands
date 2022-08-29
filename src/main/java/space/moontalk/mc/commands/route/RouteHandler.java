@@ -33,5 +33,5 @@ public interface RouteHandler {
         return Collections.emptyList();
     }
 
-    void onCall(@NotNull RouteCall call) throws Exception;
+    void onRoute(@NotNull RouteCall call) throws Exception;
 }

@@ -35,8 +35,8 @@ public class CommandHandler implements TabCompleter,
         @NotNull String        label, 
         @NotNull String[]      args
     ) {
-        val commandCall = new CommandCall(sender, command, label, args);
-        return router.evalCompletions(commandCall);
+        val call = new CommandCall(sender, command, label, args);
+        return router.evalCompletions(call);
     }
 
     @Override
@@ -46,10 +46,10 @@ public class CommandHandler implements TabCompleter,
         @NotNull String        label,
         @NotNull String[]      args
     ) {
-        val commandCall = new CommandCall(sender, command, label, args);
+        val call = new CommandCall(sender, command, label, args);
 
         try {
-            router.route(commandCall);
+            router.route(call);
         } catch (CommandException exception) {
             sendMessageIfHas(sender, exception);
             return exception.getReturnCode();

@@ -8,8 +8,8 @@ import lombok.Getter;
 
 import space.moontalk.mc.commands.CommandCall;
 
+@Getter
 public class RouteCall extends CommandCall {
-    @Getter
     private final @NotNull Object[] placeholded;
 
     public RouteCall(
@@ -34,16 +34,12 @@ public class RouteCall extends CommandCall {
         this.placeholded = placeholded;
     }
 
-    public <T> @NotNull T getPlaceholdedOrNull(int index) {
-        return 0 <= index && index < placeholded.length ? getPlaceholded(index) : null;
+    public <T> @NotNull T getPlaceholdedAtOrNull(int index) {
+        return 0 <= index && index < placeholded.length ? getPlaceholdedAt(index) : null;
     }
 
     @SuppressWarnings("unchecked")
-    public <T> @NotNull T getPlaceholded(int index) {
+    public <T> @NotNull T getPlaceholdedAt(int index) {
         return (T) placeholded[index];
-    }
-
-    public int getPlaceholdedCount() {
-        return placeholded.length;
     }
 }

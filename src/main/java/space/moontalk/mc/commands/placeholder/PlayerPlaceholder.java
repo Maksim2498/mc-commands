@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import lombok.Getter;
 import lombok.val;
 
+import space.moontalk.mc.commands.CommandCall;
 import space.moontalk.mc.commands.message.PlayerNotFoundMessageProvider;
 
 @Getter
@@ -23,12 +24,17 @@ public class PlayerPlaceholder extends AbstractPlaceholder<Player> {
     }
 
     @Override
-    public @NotNull List<String> evalVariants() {
-        return Bukkit.getOnlinePlayers().stream().map(p -> p.getName()).collect(Collectors.toList());
+    public @NotNull List<String> evalVariants(@NotNull CommandCall call) {
+        return Bukkit.getOnlinePlayers().stream()
+                                        .map(p -> p.getName())
+                                        .collect(Collectors.toList());
     }
 
     @Override
-    public @NotNull Player variantToObject(@NotNull String variant) throws PlayerNotFoundException {
+    public @NotNull Player variantToObject(
+        @NotNull CommandCall call,
+        @NotNull String      variant
+    ) throws PlayerNotFoundException {
         val player = Bukkit.getPlayer(variant);
 
         if (player == null)

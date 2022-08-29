@@ -15,4 +15,8 @@ public class CommandCall {
     private final @NotNull Command       command;
     private final @NotNull String        label;
     private final @NotNull String[]      args;
+
+    public @NotNull String getArgAtOrNull(int index) {
+        return 0 <= index && index < args.length ? args[index] : null;
+    }
 }

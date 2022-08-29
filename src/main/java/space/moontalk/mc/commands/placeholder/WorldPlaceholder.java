@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import lombok.Getter;
 import lombok.val;
 
+import space.moontalk.mc.commands.CommandCall;
 import space.moontalk.mc.commands.message.WorldNotFoundMessageProvider;
 
 @Getter
@@ -23,12 +24,15 @@ public class WorldPlaceholder extends AbstractPlaceholder<World> {
     }
 
     @Override
-    public @NotNull List<String> evalVariants() {
+    public @NotNull List<String> evalVariants(@NotNull CommandCall call) {
         return Bukkit.getWorlds().stream().map(w -> w.getName()).collect(Collectors.toList());
     }
 
     @Override
-    public @NotNull World variantToObject(@NotNull String variant) throws WorldNotFoundException {
+    public @NotNull World variantToObject(
+        @NotNull CommandCall call,
+        @NotNull String      variant
+    ) throws WorldNotFoundException {
         val world = Bukkit.getWorld(variant);
 
         if (world == null) 
