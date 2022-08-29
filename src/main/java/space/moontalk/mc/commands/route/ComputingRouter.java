@@ -127,12 +127,13 @@ public class ComputingRouter extends AbstractParsingRouter {
                 return true;
 
             val path = pah.getPath();
-            int i    = 0;
+
+            if (path.size() != args.length)
+                return true;
+
+            int i = 0;
 
             for (val node : path) {
-                if (i >= args.length)
-                    return true;
-
                 val arg  = args[i++];
                 val type = node.getType();
 

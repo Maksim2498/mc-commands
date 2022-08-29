@@ -63,7 +63,7 @@ public class CommandHandler implements TabCompleter,
     private void sendMessageIfHas(@NotNull CommandSender sender, @NotNull Exception exception) {
         val message = exception.getMessage();
 
-        if (message != null)
+        if (message != null && !message.isBlank())
             sender.sendMessage(message);
     }
 
