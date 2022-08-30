@@ -14,7 +14,7 @@ import space.moontalk.mc.commands.placeholder.PlaceholderNotFoundException;
  *
  *  - Nonterminals:
  *
- *    Route       -> TopRoute ['|' Route]
+ *    Route       -> [TopRoute ['|' Route]]
  *    TopRoute    -> MiddleRoute [TopRoute]
  *    MiddleRoute -> BottomRoute ['?' | Range]
  *    BottomRoute -> '(' TopRoute ')'
@@ -49,9 +49,27 @@ public class DefaultRouteParser implements RouteParser {
     @Override
     public @NotNull RouteNode parseRoute(@NotNull String route) throws InvalidRouteException {
         resetRoute(route);
+
+        if (isEmpty())
+            return RouteNode.None.INSTANCE;
+        
         val tree = getNextRoute();
+
         checkEnd();
+
         return tree;
+    }
+
+    private boolean isEmpty() throws InvalidRouteException {
+        val token = getNextToken();
+        val type  = token.getType();
+
+        if (type == Token.Type.END)
+            return true;
+
+        retractToken(token);
+
+        return false;
     }
 
     private void resetRoute(@NotNull String route) {

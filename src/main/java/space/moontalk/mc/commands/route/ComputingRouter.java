@@ -242,7 +242,7 @@ public class ComputingRouter extends AbstractParsingRouter {
             return argIndex;
 
         return switch (node.getType()) {
-            case NONE -> 0;
+            case NONE -> argIndex == args.length - 1 ? 0 : -1;
             case ANY  -> 1;
 
             case EXACT -> {
@@ -277,8 +277,9 @@ public class ComputingRouter extends AbstractParsingRouter {
 
                 val left  = addCompletionNodes(completionNodes, orNode.getLeftChild(),  call, argIndex);
                 val right = addCompletionNodes(completionNodes, orNode.getRightChild(), call, argIndex);
+                val min   = Math.min(left, right);
 
-                yield Math.max(left, right);
+                yield min != -1 ? min : Math.max(left, right);
             }
 
             case CONCAT -> {
