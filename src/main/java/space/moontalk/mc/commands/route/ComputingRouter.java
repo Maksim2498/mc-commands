@@ -37,7 +37,9 @@ public class ComputingRouter extends AbstractParsingRouter {
         if (possiblePaths.size() != 1)
             throw new MissingRouteException();
 
-        val path = possiblePaths.stream().findFirst().get();
+        val path = possiblePaths.stream()
+                                .findFirst()
+                                .get();
 
         routeCall(path, call);
     }

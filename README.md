@@ -29,7 +29,7 @@ Second, add library as dependency:
 <dependency>
     <groupId>space.moontalk.mc</groupId>
     <artifactId>commands</artifactId>
-    <version>3.0.2</version>
+    <version>3.0.3</version>
 </dependency>
 ```
 

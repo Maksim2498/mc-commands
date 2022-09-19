@@ -6,7 +6,6 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import lombok.val;
 
@@ -14,7 +13,7 @@ public interface RouteHandler {
     default boolean canRoute(@NotNull CommandSender sender) {
         val permission = getPermission();
 
-        if (permission != null
+        if (!permission.isBlank()
          && !sender.hasPermission(permission))
             return false;
 
@@ -22,11 +21,12 @@ public interface RouteHandler {
         val classes     = getClasses();
 
         return classes.isEmpty()
-            || classes.stream().anyMatch(c -> senderClass.isInstance(c));
+            || classes.stream()
+                      .anyMatch(c -> c.isAssignableFrom(senderClass));
     }
 
-    default @Nullable String getPermission() {
-        return null;
+    default @NotNull String getPermission() {
+        return "";
     }
 
     default @NotNull List<Class<?>> getClasses() {
