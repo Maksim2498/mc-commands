@@ -16,6 +16,11 @@ public class CommandCall {
     private final @NotNull String        label;
     private final @NotNull String[]      args;
 
+    @SuppressWarnings("unchecked")
+    public <T extends CommandSender> @NotNull T getCommandSender() {
+        return (T) commandSender;
+    }
+
     public @NotNull String getArgAtOrNull(int index) {
         return 0 <= index && index < args.length ? args[index] : null;
     }
