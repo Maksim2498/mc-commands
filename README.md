@@ -1,5 +1,7 @@
 # Commands
 
+![Logo](/images/logo.png)
+
 ## Index
 
 - [Index](#index);
@@ -45,5 +47,5 @@ mvn install
 
 ## Documentation
 
-Will be added soon...
+Will be added soon... (maybe)
 
