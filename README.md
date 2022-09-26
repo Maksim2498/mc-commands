@@ -77,6 +77,7 @@ With this little of code you get:
 - working `mytp` command.
 
 For real projects you can config all messages and add your own placeholders.
+Also you can specify required priority and command sender classes for route handlers.
 
 ### Real Plugin:
 
