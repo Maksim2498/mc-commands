@@ -9,6 +9,8 @@
 - [Installation](#installation);
 - [Building](#building);
 - [Examples](#examples);
+    - [Teleportation Plugin](#teleportaion-plugin);
+    - [Real Plugin](#real-plugin);
 - [Documentation](#documentation).
 
 ## About
@@ -48,6 +50,8 @@ mvn install
 
 ## Examples
 
+### Teleportation Plugin
+
 This is a simple player-to-player teleportation plugin example:
 
 ```java
@@ -77,6 +81,8 @@ With this little of code you get:
 - autocompletions;
 - error handling;
 - working command.
+
+### Real Plugin:
 
 For a complete real example you can see [this plugin](https://github.com/Maksim2498/mc-cpspeed).
 
