@@ -9,7 +9,7 @@
 - [Installation](#installation);
 - [Building](#building);
 - [Examples](#examples);
-    - [Teleportation Plugin](#teleportaion-plugin);
+    - [Teleportation Plugin](#teleportation-plugin);
     - [Real Plugin](#real-plugin);
 - [Documentation](#documentation).
 
