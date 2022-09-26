@@ -49,4 +49,4 @@ mvn install
 
 Will be added soon... (maybe)
 
-As usage example you can now see [this plugin](https://github.com/Maksim2498/mc-cpspeed).
+As a usage example you can now see [this plugin](https://github.com/Maksim2498/mc-cpspeed).
