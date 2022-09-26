@@ -128,16 +128,18 @@ public abstract sealed class RouteNode permits RouteNode.Nullary,
 
     @Getter
     public static final class Placeholder extends Nullary {
+        private final          char                                                  name;
         private final @NotNull space.moontalk.mc.commands.placeholder.Placeholder<?> placeholder;
 
-        public Placeholder(@NotNull space.moontalk.mc.commands.placeholder.Placeholder<?> placeholder) {
+        public Placeholder(char name, @NotNull space.moontalk.mc.commands.placeholder.Placeholder<?> placeholder) {
             super(Type.PLACEHOLDER);
+            this.name        = name;
             this.placeholder = placeholder;
         }
 
         @Override
         @NotNull String toString(@NotNull String prefix) {
-            return String.format("%s(%%%c)", super.toString(prefix), placeholder.getShortName());
+            return String.format("%s(%%%c)", super.toString(prefix), name);
         }
     }
 

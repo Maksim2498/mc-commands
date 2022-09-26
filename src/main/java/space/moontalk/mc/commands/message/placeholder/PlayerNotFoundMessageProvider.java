@@ -1,4 +1,4 @@
-package space.moontalk.mc.commands.message;
+package space.moontalk.mc.commands.message.placeholder;
 
 import org.jetbrains.annotations.NotNull;
 

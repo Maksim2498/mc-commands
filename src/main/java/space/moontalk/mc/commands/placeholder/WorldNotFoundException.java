@@ -2,13 +2,20 @@ package space.moontalk.mc.commands.placeholder;
 
 import org.jetbrains.annotations.NotNull;
 
-import space.moontalk.mc.commands.message.WorldNotFoundMessageProvider;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class WorldNotFoundException extends PlaceholderException {
-    public WorldNotFoundException(
-        @NotNull WorldNotFoundMessageProvider messageProvider,
-        @NotNull String                       worldName
-    ) {
-        super(messageProvider.makeWorldNotFoundMessage(worldName));
+    private @NotNull String worldName;
+
+    public WorldNotFoundException(@NotNull String worldName) {
+        this(worldName, String.format("world %s not found", worldName));
+    }
+
+    public WorldNotFoundException(@NotNull String worldName, @NotNull String message) {
+        super(message);
+        this.worldName = worldName;
     }
 }

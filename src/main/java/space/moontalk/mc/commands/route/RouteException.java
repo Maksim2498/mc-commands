@@ -5,9 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import space.moontalk.mc.commands.CommandException;
 
 public class RouteException extends CommandException {
-    public RouteException() {
-
-    }
+    public RouteException() {}
 
     public RouteException(@Nullable String message) {
         super(message);

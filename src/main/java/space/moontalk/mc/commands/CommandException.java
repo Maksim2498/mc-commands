@@ -5,9 +5,7 @@ import org.jetbrains.annotations.Nullable;
 public class CommandException extends Exception {
     private boolean returnCode = false;
 
-    public CommandException() {
-
-    }
+    public CommandException() {}
 
     public CommandException(@Nullable String message) {
         super(message);

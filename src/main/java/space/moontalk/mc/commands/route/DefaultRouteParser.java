@@ -6,9 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.val;
 
+import space.moontalk.mc.commands.message.MessageProviderManager;
 import space.moontalk.mc.commands.placeholder.DefaultPlaceholderManager;
 import space.moontalk.mc.commands.placeholder.PlaceholderManager;
-import space.moontalk.mc.commands.placeholder.PlaceholderNotFoundException;
 
 /* Syntax:
  *
@@ -31,15 +31,19 @@ import space.moontalk.mc.commands.placeholder.PlaceholderNotFoundException;
  *   Range       -> '{' Number [',' Number] '}'
  */
 
-@Getter
 public class DefaultRouteParser implements RouteParser {
+    @Getter
     private final @NotNull PlaceholderManager placeholderManager;
 
     private @NotNull String route;
-    private int             position;
+    private          int    position;
 
     public DefaultRouteParser() {
         this(new DefaultPlaceholderManager());
+    }
+
+    public DefaultRouteParser(@NotNull MessageProviderManager messageProviderManager) {
+        this(new DefaultPlaceholderManager(messageProviderManager));
     }
 
     public DefaultRouteParser(@NotNull PlaceholderManager placeholderManager) {
@@ -145,8 +149,9 @@ public class DefaultRouteParser implements RouteParser {
             
             case PLACEHOLDER -> {
                 val placeholderToken = (Token.Placeholder) token;
+                val name             = placeholderToken.getName();
                 val placeholder      = placeholderToken.getPlaceholder();
-                val placeholderNode  = new RouteNode.Placeholder(placeholder);
+                val placeholderNode  = new RouteNode.Placeholder(name, placeholder);
 
                 yield placeholderNode;
             }
@@ -260,12 +265,12 @@ public class DefaultRouteParser implements RouteParser {
 
     private @NotNull Token.Placeholder getNextPlaceholderToken() throws InvalidRouteException {
         try {
-            val c           = getNextCharSafe();
-            val placeholder = placeholderManager.getPlaceholder(c);
-            val token       = new Token.Placeholder(placeholder);
+            val name        = getNextCharSafe();
+            val placeholder = placeholderManager.getPlaceholder(name);
+            val token       = new Token.Placeholder(name, placeholder);
 
             return token;
-        } catch (PlaceholderNotFoundException exception) {
+        } catch (IllegalArgumentException exception) {
             throw new InvalidRouteException(route, position - 1);
         }
     }
@@ -382,10 +387,12 @@ public class DefaultRouteParser implements RouteParser {
 
         @Getter
         static final class Placeholder extends Token {
+            private final          char                                                  name;
             private final @NotNull space.moontalk.mc.commands.placeholder.Placeholder<?> placeholder;
 
-            Placeholder(@NotNull space.moontalk.mc.commands.placeholder.Placeholder<?> placeholder) {
+            Placeholder(char name, @NotNull space.moontalk.mc.commands.placeholder.Placeholder<?> placeholder) {
                 super(Type.PLACEHOLDER);
+                this.name        = name;
                 this.placeholder = placeholder;
             }
 

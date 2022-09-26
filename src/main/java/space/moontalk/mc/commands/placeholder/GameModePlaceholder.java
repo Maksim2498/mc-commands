@@ -8,36 +8,34 @@ import org.bukkit.GameMode;
 
 import org.jetbrains.annotations.NotNull;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.val;
 
 import space.moontalk.mc.commands.CommandCall;
-import space.moontalk.mc.commands.message.GameModeNotFoundMessageProvider;
+import space.moontalk.mc.commands.message.MessageProviderManager;
+import space.moontalk.mc.commands.message.placeholder.GameModeNotFoundMessageProvider;
 
 @Getter
-public class GameModePlaceholder extends AbstractPlaceholder<GameMode> {
-    private final @NotNull GameModeNotFoundMessageProvider messageProvider;
-
-    public GameModePlaceholder(@NotNull GameModeNotFoundMessageProvider messageProvider) {
-        super('g');
-        this.messageProvider = messageProvider;
-    }
+@AllArgsConstructor
+public class GameModePlaceholder implements Placeholder<GameMode> {
+    private final @NotNull MessageProviderManager messageProviderManager;
 
     @Override
-    public @NotNull List<@NotNull String> evalVariants(@NotNull CommandCall call) {
+    public @NotNull List<String> evalVariants(@NotNull CommandCall call) {
         return Arrays.stream(GameMode.values())
                      .map(gm -> gm.name().toLowerCase())
                      .collect(Collectors.toList());
     }
 
     @Override
-    public @NotNull GameMode variantToObject(
-        @NotNull CommandCall call,
-        @NotNull String      variant
-    ) throws GameModeNotFoundException {
+    public @NotNull GameMode variantToObject(@NotNull CommandCall call, @NotNull String variant) throws GameModeNotFoundException {
         try {
             return GameMode.valueOf(variant.toUpperCase());
         } catch (IllegalArgumentException exception) {
-            throw new GameModeNotFoundException(messageProvider, variant);
+            val messageProvider = messageProviderManager.getCompatibleMessageProvider(GameModeNotFoundMessageProvider.class);
+            val message         = messageProvider.makeGameModeNotFoundMessage(variant);
+            throw new GameModeNotFoundException(variant, message);
         }
     }
 }

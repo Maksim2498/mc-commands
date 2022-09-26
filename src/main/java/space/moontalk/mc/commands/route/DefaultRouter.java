@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
-
 import org.jetbrains.annotations.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -13,18 +12,15 @@ import lombok.Getter;
 import lombok.val;
 
 import space.moontalk.mc.commands.CommandCall;
-import space.moontalk.mc.commands.placeholder.PlaceholderManager;
+import space.moontalk.mc.commands.InvalidClassException;
+import space.moontalk.mc.commands.MissingPermissionException;
 
-public class ComputingRouter extends AbstractParsingRouter {
-    public ComputingRouter() {
+public class DefaultRouter extends AbstractParsingRouter {
+    public DefaultRouter() {
         this(new DefaultRouteParser());
     }
 
-    public ComputingRouter(@NotNull PlaceholderManager placeholderManager) {
-        this(new DefaultRouteParser(placeholderManager));
-    }
-
-    public ComputingRouter(@NotNull RouteParser routeParser) {
+    public DefaultRouter(@NotNull RouteParser routeParser) {
         super(routeParser);
     }
 
@@ -119,15 +115,9 @@ public class ComputingRouter extends AbstractParsingRouter {
     }
 
     private void filterPossiblePaths(@NotNull List<PathAndHandler> pahs, @NotNull CommandCall call) {
-        val sender = call.getCommandSender();
-        val args   = call.getArgs();
+        val args = call.getArgs();
 
         pahs.removeIf(pah -> {
-            val handler = pah.getHandler();
-
-            if (!handler.canRoute(sender))
-                return true;
-
             val path = pah.getPath();
 
             if (path.size() != args.length)
@@ -135,43 +125,45 @@ public class ComputingRouter extends AbstractParsingRouter {
 
             int i = 0;
 
-            for (val node : path) {
-                val arg  = args[i++];
-                val type = node.getType();
+            for (val node : path)
+                if (node instanceof RouteNode.Exact exactNode) {
+                    val string = exactNode.getString();
+                    val arg    = args[i++];
 
-                switch (type) {
-                    case EXACT: {
-                        val exactNode = (RouteNode.Exact) node;
-                        val string    = exactNode.getString();
-
-                        if (!string.equals(arg))
-                            return true;
-
-                        break;
-                    }
-
-                    case PLACEHOLDER: {
-                        val placeholderNode = (RouteNode.Placeholder) node;
-                        val placeholder     = placeholderNode.getPlaceholder();
-                        val variants        = placeholder.evalVariants(call);
-
-                        if (!variants.contains(arg))
-                            return true;
-
-                        break;
-                    }
-
-                    default:
-                        break;
+                    if (!string.equals(arg))
+                        return true;
                 }
-            }
             
             return false;
         });
     }
 
     private void routeCall(@NotNull PathAndHandler pah, @NotNull CommandCall call) throws Exception {
-        val path            = pah.getPath();
+        val handler = pah.getHandler();
+        val sender  = call.getCommandSender();
+
+        checkSender(sender, handler);
+
+        val path        = pah.getPath();
+        val placeholded = placehold(path, call);
+        val routeCall   = new RouteCall(call, placeholded);
+
+        handler.onRoute(routeCall);
+    }
+
+    private void checkSender(@NotNull CommandSender sender, @NotNull RouteHandler handler) throws Exception {
+        if (!handler.hasPermission(sender)) {
+            val permission = handler.getPermission();
+            throw new MissingPermissionException(permission);
+        }
+
+        if (!handler.isOfClass(sender)) {
+            val classes = handler.getClasses();
+            throw new InvalidClassException(classes);
+        }
+    }
+
+    private @NotNull Object[] placehold(@NotNull List<RouteNode.Nullary> path, @NotNull CommandCall call) throws Exception {
         val placeholdedList = new LinkedList<Object>();
         val args            = call.getArgs();
         int i               = 0;
@@ -180,22 +172,15 @@ public class ComputingRouter extends AbstractParsingRouter {
             if (node instanceof RouteNode.Placeholder placeholderNode) {
                 val placeholder = placeholderNode.getPlaceholder();
                 val arg         = args[i];
-
-                try {
-                    val placeholded = placeholder.variantToObject(call, arg);
-
-                    placeholdedList.add(placeholded);
-                } catch (Exception exception) {}
+                val placeholded = placeholder.variantToObject(call, arg);
+                placeholdedList.add(placeholded);
             }
 
             ++i;
         }
 
         val placeholdedArray = placeholdedList.toArray();
-        val routeCall        = new RouteCall(call, placeholdedArray);
-        val handler          = pah.getHandler();
-
-        handler.onRoute(routeCall);
+        return placeholdedArray;
     }
 
     @Override
@@ -236,7 +221,7 @@ public class ComputingRouter extends AbstractParsingRouter {
         @NotNull List<RouteNode> completionNodes,
         @NotNull RouteNode       node,
         @NotNull CommandCall     call,
-        int                      argIndex
+                 int             argIndex
     ) {
         val args = call.getArgs();
 

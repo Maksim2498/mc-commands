@@ -2,13 +2,20 @@ package space.moontalk.mc.commands.placeholder;
 
 import org.jetbrains.annotations.NotNull;
 
-import space.moontalk.mc.commands.message.PlayerNotFoundMessageProvider;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class PlayerNotFoundException extends PlaceholderException {
-    public PlayerNotFoundException(
-        @NotNull PlayerNotFoundMessageProvider messageProvider,
-        @NotNull String                        playerName
-    ) {
-        super(messageProvider.makePlayerNotFoundMessage(playerName)); 
+    private @NotNull String playerName;
+
+    public PlayerNotFoundException(@NotNull String playerName) {
+        this(playerName, String.format("player %s not found", playerName));
+    }
+
+    public PlayerNotFoundException(@NotNull String playerName, @NotNull String message) {
+        super(message);
+        this.playerName = playerName;
     }
 }
