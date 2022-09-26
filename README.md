@@ -69,7 +69,7 @@ public class Plugin extends JavaPlugin {
 }
 ```
 
-`%p` is a placeholders which stands for an online player.
+`%p` is a _placeholder_ which stands for an online player.
 
 With this little of code you get:
 - autocompletions;
@@ -77,7 +77,7 @@ With this little of code you get:
 - working `mytp` command.
 
 For real projects you can config all messages and add your own placeholders.
-Also you can specify required priority and command sender classes for route handlers.
+Also you can specify required _priority_ and command _sender classes_ for _route handlers_.
 
 ### Real Plugin:
 
