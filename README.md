@@ -80,7 +80,9 @@ public class Plugin extends JavaPlugin {
 With this little of code you get:
 - autocompletions;
 - error handling;
-- working command.
+- working `mytp` command.
+
+For real projects you can config all messages and add your own placeholders.
 
 ### Real Plugin:
 
