@@ -1,5 +1,3 @@
 package space.moontalk.mc.commands.route;
 
-public class MissingRouteException extends RouteException {
-
-}
+public class MissingRouteException extends RouteException {}

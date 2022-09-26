@@ -34,7 +34,7 @@ Second, add library as dependency:
 <dependency>
     <groupId>space.moontalk.mc</groupId>
     <artifactId>commands</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.1</version>
 </dependency>
 ```
 
@@ -58,19 +58,13 @@ This is a simple player-to-player teleportation plugin example:
 public class Plugin extends JavaPlugin {
     @Override
     public void onEnable() {
-        try {
-            final var commandHandler = new DefaultMultiCommandHandler(this);
+        final var commandHandler = new DefaultMultiCommandHandler(this);
 
-            commandHandler.addCommandRoute("mytp %p %p", call -> {
-                final Player from = call.getPlaceholdedAt(0);
-                final Player to   = call.getPlaceholdedAt(1);
-                from.teleport(to);
-            });
-        } catch (InvalidRouteException exception) {
-            final var logger  = getLogger();
-            final var message = exception.getMessage();
-            logger.info(message);
-        }
+        commandHandler.addCommandRoute("mytp %p %p", call -> {
+            final Player from = call.getPlaceholdedAt(0);
+            final Player to   = call.getPlaceholdedAt(1);
+            from.teleport(to);
+        });
     }
 }
 ```

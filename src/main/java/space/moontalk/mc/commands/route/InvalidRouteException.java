@@ -10,7 +10,7 @@ import lombok.val;
 @Getter
 @Setter
 @AllArgsConstructor
-public class InvalidRouteException extends Exception {
+public class InvalidRouteException extends RuntimeException {
     private final @NotNull String route;
     private final int             position;
 

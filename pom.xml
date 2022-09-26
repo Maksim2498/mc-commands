@@ -4,7 +4,7 @@
 
     <groupId>space.moontalk.mc</groupId>
     <artifactId>commands</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.1</version>
 
     <name>Commands API</name>
     <description>Java library that provides better commands API for Bukkit plugins</description>

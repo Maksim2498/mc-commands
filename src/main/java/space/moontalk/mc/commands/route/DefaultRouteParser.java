@@ -51,7 +51,7 @@ public class DefaultRouteParser implements RouteParser {
     }
 
     @Override
-    public @NotNull RouteNode parseRoute(@NotNull String route) throws InvalidRouteException {
+    public @NotNull RouteNode parseRoute(@NotNull String route) {
         resetRoute(route);
 
         if (isEmpty())
@@ -64,7 +64,7 @@ public class DefaultRouteParser implements RouteParser {
         return tree;
     }
 
-    private boolean isEmpty() throws InvalidRouteException {
+    private boolean isEmpty() {
         val token = getNextToken();
         val type  = token.getType();
 
@@ -81,7 +81,7 @@ public class DefaultRouteParser implements RouteParser {
         position   = 0;
     }
 
-    private @NotNull RouteNode getNextRoute() throws InvalidRouteException {
+    private @NotNull RouteNode getNextRoute() {
         var node  = getNextTopRoute();
         val token = getNextToken();
         val type  = token.getType();
@@ -97,7 +97,7 @@ public class DefaultRouteParser implements RouteParser {
         return node;
     }
 
-    private @NotNull RouteNode getNextTopRoute() throws InvalidRouteException {
+    private @NotNull RouteNode getNextTopRoute() {
         var node        = getNextMiddleRoute();
         val oldPosition = position;
 
@@ -113,7 +113,7 @@ public class DefaultRouteParser implements RouteParser {
         return node;
     }
 
-    private @NotNull RouteNode getNextMiddleRoute() throws InvalidRouteException {
+    private @NotNull RouteNode getNextMiddleRoute() {
         val node  = getNextBottomRoute();
         val token = getNextToken();
         val type  = token.getType();
@@ -136,7 +136,7 @@ public class DefaultRouteParser implements RouteParser {
         };
     }
 
-    private @NotNull RouteNode getNextBottomRoute() throws InvalidRouteException {
+    private @NotNull RouteNode getNextBottomRoute() {
         val token = getNextToken();
         val type  = token.getType();
 
@@ -170,18 +170,18 @@ public class DefaultRouteParser implements RouteParser {
         };
     }
 
-    private void checkEnd() throws InvalidRouteException {
+    private void checkEnd() {
         checkNextTokenType(Token.Type.END);
     }
 
-    private void checkNextTokenType(@NotNull Token.Type type) throws InvalidRouteException {
+    private void checkNextTokenType(@NotNull Token.Type type) {
         val token = getNextToken();
 
         if (token.getType() != type)
             throw new InvalidRouteException(route, position - 1);
     }
 
-    private @NotNull Token getNextToken() throws InvalidRouteException {
+    private @NotNull Token getNextToken() {
         skipWhitespace();
 
         char c;
@@ -217,7 +217,7 @@ public class DefaultRouteParser implements RouteParser {
         } catch (IndexOutOfBoundsException exception) {}
     }
 
-    private @NotNull Token.Range getNextRangeToken() throws InvalidRouteException {
+    private @NotNull Token.Range getNextRangeToken() {
         checkNextChar('{');
 
         int  from = getNextInt();
@@ -236,14 +236,14 @@ public class DefaultRouteParser implements RouteParser {
         };
     }
 
-    private void checkNextChar(char tc) throws InvalidRouteException {
+    private void checkNextChar(char tc) {
         val nc = getNextCharSafe();
 
         if (nc != tc)
             throw new InvalidRouteException(route, position - 1);
     }
 
-    private int getNextInt() throws InvalidRouteException {
+    private int getNextInt() {
         var c = getNextCharSafe();
 
         if (!Character.isDigit(c))
@@ -263,7 +263,7 @@ public class DefaultRouteParser implements RouteParser {
         return i;
     }
 
-    private @NotNull Token.Placeholder getNextPlaceholderToken() throws InvalidRouteException {
+    private @NotNull Token.Placeholder getNextPlaceholderToken() {
         try {
             val name        = getNextCharSafe();
             val placeholder = placeholderManager.getPlaceholder(name);
@@ -275,7 +275,7 @@ public class DefaultRouteParser implements RouteParser {
         }
     }
 
-    private @NotNull Token.Exact getNextExactToken() throws InvalidRouteException {
+    private @NotNull Token.Exact getNextExactToken() {
         char c = getNextCharSafe();
 
         if (!Character.isJavaIdentifierStart(c))
@@ -308,7 +308,7 @@ public class DefaultRouteParser implements RouteParser {
         position -= token.getLength();
     }
 
-    private char getNextCharSafe() throws InvalidRouteException {
+    private char getNextCharSafe() {
         try {
             return getNextChar();
         } catch (IndexOutOfBoundsException exception) {
