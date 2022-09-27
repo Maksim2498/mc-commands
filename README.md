@@ -81,7 +81,7 @@ Also you can specify required _priority_ and command _sender classes_ for _route
 
 ### Real Plugin:
 
-For a complete real example you can see [this plugin](https://github.com/Maksim2498/mc-cpspeed).
+For a complete world-real example you can see [this plugin](https://github.com/Maksim2498/mc-cpspeed).
 
 ## Documentation
 
