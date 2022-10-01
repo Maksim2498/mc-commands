@@ -7,19 +7,22 @@ import space.moontalk.mc.commands.message.route.*;
 
 public class DefaultMessageProviderManager extends HashMessageProviderManager {
     public DefaultMessageProviderManager() {
-        val gameModeNotFoundMessageProvider = new GameModeNotFoundMessageProvider() {};
-        setMessageProvider(GameModeNotFoundMessageProvider.class, gameModeNotFoundMessageProvider);
+        val gameModeNotFound = new GameModeNotFoundMessageProvider() {};
+        setMessageProvider(GameModeNotFoundMessageProvider.class, gameModeNotFound);
 
-        val playerNotFoundMessageProvider = new PlayerNotFoundMessageProvider() {};
-        setMessageProvider(PlayerNotFoundMessageProvider.class, playerNotFoundMessageProvider);
+        val offlinePlayerNotFound = new OfflinePlayerNotFoundMessageProvider() {};
+        setMessageProvider(OfflinePlayerNotFoundMessageProvider.class, offlinePlayerNotFound);
 
-        val worldNotFoundMessageProvider = new WorldNotFoundMessageProvider() {};
-        setMessageProvider(WorldNotFoundMessageProvider.class, worldNotFoundMessageProvider);
+        val playerNotFound = new PlayerNotFoundMessageProvider() {};
+        setMessageProvider(PlayerNotFoundMessageProvider.class, playerNotFound);
 
-        val missingPermissionMessageProvider = new MissingPermissionMessageProvider() {};
-        setMessageProvider(MissingPermissionMessageProvider.class, missingPermissionMessageProvider);
+        val worldNotFound = new WorldNotFoundMessageProvider() {};
+        setMessageProvider(WorldNotFoundMessageProvider.class, worldNotFound);
 
-        val invalidClassMessageProvider = new InvalidClassMessageProvider() {};
-        setMessageProvider(InvalidClassMessageProvider.class, invalidClassMessageProvider);
+        val missingPermission = new MissingPermissionMessageProvider() {};
+        setMessageProvider(MissingPermissionMessageProvider.class, missingPermission);
+
+        val invalidClass = new InvalidClassMessageProvider() {};
+        setMessageProvider(InvalidClassMessageProvider.class, invalidClass);
     }
 }

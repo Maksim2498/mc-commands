@@ -13,13 +13,19 @@ public class DefaultPlaceholderManager extends TreePlaceholderManager {
     }
 
     public DefaultPlaceholderManager(@NotNull MessageProviderManager messageProviderManager) {
-        val gameModePlaceholder = new GameModePlaceholder(messageProviderManager);
-        setPlaceholder('g', gameModePlaceholder);
+        val anyPlayer = new AnyPlayerPlaceholder(messageProviderManager);
+        setPlaceholder('a', anyPlayer);
 
-        val playerPlaceholder = new PlayerPlaceholder(messageProviderManager);
-        setPlaceholder('p', playerPlaceholder);
+        val gameMode = new GameModePlaceholder(messageProviderManager);
+        setPlaceholder('g', gameMode);
 
-        val worldPlaceholder = new WorldPlaceholder(messageProviderManager);
-        setPlaceholder('w', worldPlaceholder);
+        val offlinePlayer = new OfflinePlayerPlaceholder(messageProviderManager);
+        setPlaceholder('o', offlinePlayer);
+
+        val player = new PlayerPlaceholder(messageProviderManager);
+        setPlaceholder('p', player);
+
+        val world = new WorldPlaceholder(messageProviderManager);
+        setPlaceholder('w', world);
     }
 }
