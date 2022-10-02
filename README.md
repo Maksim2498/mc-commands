@@ -82,6 +82,7 @@ Also you can specify required _priority_ and command _sender classes_ for _route
 ### Real Plugin:
 
 For a complete real-world example you can see [this plugin](https://github.com/Maksim2498/mc-cpspeed).
+Full power of the plugin is shown in the `setupCommands` method of the [main class](https://github.com/Maksim2498/mc-cpspeed/blob/main/src/main/java/space/moontalk/mc/cpspeed/CPSpeed.java);
 
 ## Documentation
 
