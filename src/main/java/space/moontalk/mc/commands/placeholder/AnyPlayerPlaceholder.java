@@ -30,7 +30,7 @@ public class AnyPlayerPlaceholder implements Placeholder<OfflinePlayer> {
         for (val player : Bukkit.getOnlinePlayers())
             players.add(player.getName());
 
-        for (val player : Bukkit.getOnlinePlayers())
+        for (val player : Bukkit.getOfflinePlayers())
             players.add(player.getName());
 
         return players;
