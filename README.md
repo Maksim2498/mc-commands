@@ -34,7 +34,7 @@ Second, add library as dependency:
 <dependency>
     <groupId>space.moontalk.mc</groupId>
     <artifactId>commands</artifactId>
-    <version>4.0.1</version>
+    <version>4.1.2</version>
 </dependency>
 ```
 

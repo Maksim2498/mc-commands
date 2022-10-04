@@ -88,7 +88,7 @@ public class DefaultCommandHandler implements CommandHandler<ParsingRouter> {
         } catch (InvalidClassException exception) {
             val messageProvider = messageProviderManager.getCompatibleMessageProvider(InvalidClassMessageProvider.class); 
             val classes         = exception.getClasses();
-            val message         = messageProvider.makeInvalidClassMessage(classes);
+            val message         = messageProvider.makeInvalidClassMessage(sender, classes);
             sender.sendMessage(message);
             return exception.getReturnCode();
         } catch (MissingPermissionException exception) {
